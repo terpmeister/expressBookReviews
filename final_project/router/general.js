@@ -76,7 +76,7 @@ public_users.get('/author/:author',function (req, res) {
     let booksbyauthor = [];
     let isbns = Object.keys(books);
     isbns.forEach((isbn) => {
-      if(books[isbn]["author"] === req.params.author) {
+      if (books[isbn]["author"] === req.params.author) {
         booksbyauthor.push({"isbn":isbn,
                             "title":books[isbn]["title"],
                             "reviews":books[isbn]["reviews"]});
@@ -92,15 +92,14 @@ public_users.get('/author/:author',function (req, res) {
 
 });
 
-// Get book details based on Author using Promises (Task 12)
+// Get book details based on author using Promises (Task 12)
 public_users.get('/books/author/:author',function (req, res) {
-
     const get_books_author = new Promise((resolve, reject) => {
         let booksbyauthor = [];
         let isbns = Object.keys(books);
         
         isbns.forEach((isbn) => {
-        if(books[isbn]["author"] === req.params.author) {
+        if (books[isbn]["author"] === req.params.author) {
             booksbyauthor.push({"isbn":isbn,
                                 "title":books[isbn]["title"],
                                 "reviews":books[isbn]["reviews"]});
@@ -128,14 +127,45 @@ public_users.get('/title/:title',function (req, res) {
     let booksbytitle = [];
     let isbns = Object.keys(books);
     isbns.forEach((isbn) => {
-      if(books[isbn]["title"] === req.params.title) {
+        if (books[isbn]["title"] === req.params.title) {
         booksbytitle.push({"isbn":isbn,
                             "title":books[isbn]["title"],
                             "author":books[isbn]["author"],
                             "reviews":books[isbn]["reviews"]});
-      }
+        }
     });
     res.send(JSON.stringify({booksbytitle}, null, 4));
+});
+
+// Get book details based on title using Promises (Task 13)
+public_users.get('/books/title/:title',function (req, res) {
+    const get_books_author = new Promise((resolve, reject) => {
+        let booksbytitle = [];
+        let isbns = Object.keys(books);
+        
+        isbns.forEach((isbn) => {
+            if (books[isbn]["title"] === req.params.title) {
+                booksbytitle.push({ "isbn":isbn,
+                                    "title":books[isbn]["title"],
+                                    "author":books[isbn]["author"],
+                                    "reviews":books[isbn]["reviews"]});
+                }
+        });
+
+        if (booksbytitle.length === 0) {
+            reject(res.send('Title not found'));
+        }
+
+        resolve(res.send(JSON.stringify({booksbytitle}, null, 4)));
+    });
+
+    get_books_author.then(function(){
+            console.log("Promise for Task 13 is resolved");
+
+    }).catch(function () { 
+            console.log('The Title does not exist');
+  });
+
 });
 
 //  Get book review
