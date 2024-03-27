@@ -29,10 +29,10 @@ public_users.get('/',function (req, res) {
 // Get the book list available using Promises
 public_users.get('/books',function (req, res) { 
     let get_books = new Promise((resolve, reject) => { 
-      resolve(res.send(JSON.stringify({books}, null, 4)));     
+       resolve(res.send(JSON.stringify({books}, null, 4)));     
      });
     get_books.then(() => 
-      console.log("Task 10 Promise resolved"));
+       console.log("Task 10 Promise resolved"));
 });
 
 // Get book details based on ISBN
@@ -47,6 +47,30 @@ public_users.get('/isbn/:isbn',function (req, res) {
         res.status(200).json(book);
     }
  });
+
+// Get book details based on ISBN using Promises
+public_users.get('/books/isbn/:isbn',function (req, res) {
+    const get_books_isbn = new Promise((resolve, reject) => {
+ 
+        const isbn = req.params.isbn;
+        const book = books[isbn];
+
+        if (!book) {
+            reject(res.send('ISBN not found'));
+        }
+        else {
+            resolve(res.send(books[isbn]));
+        }
+    });
+
+    get_books_isbn.
+        then(function(){
+            console.log("Promise for Task 11 is resolved");
+   }).
+        catch(function () { 
+            console.log('ISBN not found');
+  });
+});
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
