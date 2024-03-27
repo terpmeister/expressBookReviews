@@ -26,6 +26,15 @@ public_users.get('/',function (req, res) {
 
 });
 
+// Get the book list available using Promises
+public_users.get('/books',function (req, res) { 
+    let get_books = new Promise((resolve, reject) => { 
+      resolve(res.send(JSON.stringify({books}, null, 4)));     
+     });
+    get_books.then(() => 
+      console.log("Task 10 Promise resolved"));
+});
+
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
     const isbn = req.params.isbn;
